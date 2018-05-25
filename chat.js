@@ -28,6 +28,14 @@ io.sockets.on('connection', function (socket) {
         console.log('this is rooms', socket.rooms);
     })
 
+    // setInterval(function () {
+    //     console.log('this is rooms', socket.rooms);
+    // }, 1000)
+
+    socket.on('show room', function (data) {
+        console.log('this is show room', socket.rooms[data.room_id])
+    })
+
 
 
 

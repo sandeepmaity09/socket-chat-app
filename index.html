@@ -36,6 +36,12 @@
             socket.emit('join room', { room_id: "asdfwervsdeasdf" })
         }, 8000);
 
+        setTimeout(function () {
+            socket.emit('show room', { room_id: "asdfwervsdeasdf" })
+        }, 10000);
+
+
+
     });
 </script>
 
