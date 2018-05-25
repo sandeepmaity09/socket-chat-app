@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/main.css" />
     <!-- <script src="main.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
@@ -29,9 +29,9 @@
                 console.log('socket connected');
             })
 
-            setTimeout(function () {
-                socket.emit('join room', { room_id: "asdfasdf" })
-            }, 5000);
+            // setTimeout(function () {
+            //     socket.emit('join room', { room_id: "asdfasdf" })
+            // }, 5000);
 
             // setTimeout(function () {
             //     socket.emit('join room', { room_id: "asdfasdasdfsadff" })
@@ -48,6 +48,8 @@
             // setTimeout(function () {
             //     socket.emit('show room', { room_id: "asdfwervsdeasdf" })
             // }, 10000);
+
+
 
         });
     </script>

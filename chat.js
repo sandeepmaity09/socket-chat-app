@@ -22,18 +22,30 @@ io.sockets.on('connection', function (socket) {
     console.log(Object.keys(socket));
     console.log('this is rooms', socket.rooms);
 
+
+    // console.log('this is clients data', socket.client);
+    console.log('this is socket id', socket.id);
+
+
     socket.on('join room', function (data) {
         socket.join(data.room_id);
-        console.log('this is room', socket.room);
         console.log('this is rooms', socket.rooms);
     })
 
-    // setInterval(function () {
-    //     console.log('this is rooms', socket.rooms);
-    // }, 1000)
+    setInterval(function () {
+        console.log('this is rooms', socket.rooms);
+    }, 10000);
+
+    socket.on("send message", function (data) {
+        console.log('data received at socket', data);
+    })
 
     socket.on('show room', function (data) {
         console.log('this is show room', socket.rooms[data.room_id])
+    });
+
+    socket.on('specific lister', function (data) {
+
     })
 
 
