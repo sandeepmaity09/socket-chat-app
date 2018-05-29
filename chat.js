@@ -28,16 +28,35 @@ io.sockets.on('connection', function (socket) {
 
 
     socket.on('join room', function (data) {
-        socket.join(data.room_id);
-        console.log('this is rooms', socket.rooms);
+        // socket.join(data.room_id);
+        // console.log('this is rooms', socket.rooms);
+        // console.log('this is socket id', socket.id);
     })
 
-    setInterval(function () {
+    // setInterval(function () {
+    //     console.log('this is rooms', socket.rooms);
+    // }, 10000);
+
+    socket.on('switch room', function (data) {
+        let room = JSON.parse(data);
+        socket.join(room.room_id);
         console.log('this is rooms', socket.rooms);
-    }, 10000);
+        // socket.to(room.room_id).emit('switch room', JSON.stringify({
+        //     room: room.room_id
+        // }))
+        socket.emit('switch room', JSON.stringify({
+            room: room.room_id
+        }))
+    })
 
     socket.on("send message", function (data) {
-        console.log('data received at socket', data);
+        let message = JSON.parse(data);
+        console.log('this is message room', message.room_id);
+        console.log('this is the message', message.message);
+
+        socket.to(room.room_id).emit('send message', JSON.stringify({
+
+        }))
     })
 
     socket.on('show room', function (data) {
@@ -47,10 +66,6 @@ io.sockets.on('connection', function (socket) {
     socket.on('specific lister', function (data) {
 
     })
-
-
-
-
 })
 
 // app.listen(8080, function () {
