@@ -54,8 +54,9 @@ io.sockets.on('connection', function (socket) {
         console.log('this is message room', message.room_id);
         console.log('this is the message', message.message);
 
-        socket.to(room.room_id).emit('send message', JSON.stringify({
-
+        socket.to(message.room_id).emit('send message', JSON.stringify({
+            room: message.room_id,
+            message: message.message
         }))
     })
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>Page Title 1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <!-- <script src="main.js"></script> -->
@@ -68,13 +68,14 @@
                 let rom = JSON.parse(room);
                 $('#room').append($('<li>').text(rom.room));
                 window.scrollTo(0, document.body.scrollHeight);
-                console.log('this is room', rom.room);
+                console.log('this is room', rom);
             });
 
             socket.on('send message', function (msg) {
-                $('#messages').append($('<li>').text(msg));
+                let mesg = JSON.parse(msg);
+                $('#messages').append($('<li>').text(mesg.message));
                 window.scrollTo(0, document.body.scrollHeight);
-                console.log('this is message', msg);
+                console.log('this is message', mesg);
             });
 
             // setInterval(function () {

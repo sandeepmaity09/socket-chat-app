@@ -4,50 +4,140 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>Page Title 3</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <!-- <script src="main.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 </head>
 
 
 <body>
+
+
+    <h2>Enter in the room</h2>
+    <ul id="room"></ul>
+    <form id="form1" action="">
+        <input id="ro" autocomplete="off" />
+        <button>Send</button>
+    </form>
+
+
+    <h3>Enter Your Message Here</h3>
     <ul id="messages"></ul>
-    <form action="">
+    <form id="form2" action="">
         <input id="m" autocomplete="off" />
         <button>Send</button>
     </form>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
     <script>
 
         $(function () {
-            var socket = io.connect('http://localhost:8080');
+            var socket = io.connect('http://localhost:8080', {
+                transports: ['websocket']
+            });
 
             socket.on('connect', function () {
                 console.log('socket connected');
             })
 
-            setTimeout(function () {
-                socket.emit('join room', { room_id: "asdfasdf" })
-            }, 5000);
+            $('#form1').submit(function () {
+                console.log('room button');
+                room = $('#ro').val();
+                console.log('this is the room', room);
+                socket.emit('switch room', JSON.stringify({ room_id: room }));
+                // $('#ro').val('');
+                return false;
+            })
 
-            setTimeout(function () {
-                socket.emit('join room', { room_id: "asdfasdasdfsadff" })
-            }, 6000);
+            $('#form2').submit(function () {
+                console.log('message button');
+                message = $('#m').val();
+                room = $('#ro').val();
+                // console.log('this is the room', room);
+                console.log('this is the message', message);
+                socket.emit('send message', JSON.stringify({ room_id: room, message: message }));
+                $('#m').val('');
+                return false;
+            })
 
-            setTimeout(function () {
-                socket.emit('join room', { room_id: "asdwerwerfasdf" })
-            }, 7000);
+            socket.on('switch room', function (room) {
+                let rom = JSON.parse(room);
+                $('#room').append($('<li>').text(rom.room));
+                window.scrollTo(0, document.body.scrollHeight);
+                console.log('this is room', rom);
+            });
 
-            setTimeout(function () {
-                socket.emit('join room', { room_id: "asdfwervsdeasdf" })
-            }, 8000);
+            socket.on('send message', function (msg) {
+                let mesg = JSON.parse(msg);
+                $('#messages').append($('<li>').text(mesg.message));
+                window.scrollTo(0, document.body.scrollHeight);
+                console.log('this is message', mesg);
+            });
 
-            setTimeout(function () {
-                socket.emit('show room', { room_id: "asdfwervsdeasdf" })
-            }, 10000);
+            // setInterval(function () {
+            //     socket.emit('join room', { room_id: "asdfasdf" })
+            // }, 5000);
+
+            // setInterval(function () {
+            //     socket.emit('switch room', { room_id: "asdfasdf" })
+            // }, 5000);
+
+            // $('form').submit(function () {
+            //     var message = {};
+
+            //     var d = new Date();
+            //     var day = d.getUTCDate();
+            //     var month = d.getUTCMonth() + 1;
+            //     var year = d.getUTCFullYear();
+            //     if (day < 10) {
+            //         day = "0" + day;
+            //     }
+            //     if (month < 10) {
+            //         month = "0" + month;
+            //     }
+            //     var curr_hour = d.getUTCHours();
+            //     var curr_min = d.getUTCMinutes();
+            //     var curr_sec = d.getUTCSeconds();
+            //     var date = year + "-" + month + "-" + day + " " + curr_hour + ":" + curr_min + ":" + curr_sec;
+
+            //     // /*
+            //     message.user_id = 24;
+            //     message.box_id = "50bc2a83e4b0efcb4c2a6cce";
+            //     message.message = "" + $('#m').val();
+            //     message.status = "1";
+            //     message.created_at = date;
+            //     message.type = "";
+            //     // message.message_id = 2749;
+            //     message.is_like = 0;
+            //     message.isliketext = "";
+            //     message.parent_id = 0;
+            //     // message.chat_type = 1;
+            //     // */
+
+            //     socket.emit('send message', JSON.stringify(message))
+            //     $('#m').val('');
+            //     return false;
+            // });
+
+            // setTimeout(function () {
+            //     socket.emit('join room', { room_id: "asdfasdasdfsadff" })
+            // }, 6000);
+
+            // setTimeout(function () {
+            //     socket.emit('join room', { room_id: "asdwerwerfasdf" })
+            // }, 7000);
+
+            // setTimeout(function () {
+            //     socket.emit('join room', { room_id: "asdfwervsdeasdf" })
+            // }, 8000);
+
+            // setTimeout(function () {
+            //     socket.emit('show room', { room_id: "asdfwervsdeasdf" })
+            // }, 10000);
 
         });
     </script>
