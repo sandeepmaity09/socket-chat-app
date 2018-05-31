@@ -19,8 +19,12 @@ io.sockets.on('connection', function (socket) {
     // })
     // console.log(socket);
 
-    console.log(Object.keys(socket));
+    console.log('this is io from server', Object.keys(io));
+
+    console.log('these are socket object keys', Object.keys(socket));
     console.log('this is rooms', socket.rooms);
+
+    console.log('this is adapter', socket.adapter);
 
 
     // console.log('this is clients data', socket.client);
@@ -38,12 +42,32 @@ io.sockets.on('connection', function (socket) {
     // }, 10000);
 
     socket.on('switch room', function (data) {
+        // socket.rooms = {};
         let room = JSON.parse(data);
+
+
+
+        console.log('i am connected to these rooms', io.sockets.adapter.sids[socket.id]);
+        let allrooms = io.sockets.adapter.sids[socket.id];
+        for (let room in allrooms) {
+            if (room == socket.id || room == room.room_id) {
+                // allrooms[room] = true;
+            } else {
+                // allrooms[room] = false;
+                socket.leave(room);
+            }
+        }
+        console.log('i am connected to these rooms', allrooms);
+
+
         socket.join(room.room_id);
         console.log('this is rooms', socket.rooms);
+
         // socket.to(room.room_id).emit('switch room', JSON.stringify({
         //     room: room.room_id
         // }))
+
+
         socket.emit('switch room', JSON.stringify({
             room: room.room_id
         }))
@@ -54,7 +78,12 @@ io.sockets.on('connection', function (socket) {
         console.log('this is message room', message.room_id);
         console.log('this is the message', message.message);
 
-        socket.to(message.room_id).emit('send message', JSON.stringify({
+        // socket.broadcast.to(message.room_id).emit('send message', JSON.stringify({
+        //     room: message.room_id,
+        //     message: message.message
+        // }))
+
+        io.in(message.room_id).emit('send message', JSON.stringify({
             room: message.room_id,
             message: message.message
         }))

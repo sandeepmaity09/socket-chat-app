@@ -42,6 +42,7 @@
 
             socket.on('connect', function () {
                 console.log('socket connected');
+                console.log('this is io from browser', io);
             })
 
             $('#form1').submit(function () {
